@@ -2,25 +2,30 @@ package com.app.exibhitease.presentation.home_Screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.overscroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedFilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SelectableChipColors
@@ -32,11 +37,13 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.exibhitease.R
-import com.app.exibhitease.ui.theme.poppins_Bold
+import com.app.exibhitease.presentation.data.repository.getHArts
+import com.app.exibhitease.presentation.data.repository.getVArts
 import com.app.exibhitease.ui.theme.poppins_light
 import com.app.exibhitease.ui.theme.poppins_medium
 import com.app.exibhitease.ui.theme.poppins_regular
@@ -56,14 +63,153 @@ fun HomeScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopComponent()
+        BottomComponent()
     }
 }
+
+@Composable
+fun BottomComponent(
+    modifier: Modifier = Modifier
+) {
+    val hArts = getHArts()
+    val vArts = getVArts()
+    LazyColumn(
+        modifier = modifier
+            .fillMaxWidth(0.95f)
+            .fillMaxHeight()
+    ) {
+        item {
+            Row(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth(0.95f),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                Text(
+                    text = "Popular",
+                    fontSize = 20.sp,
+                    color = system_black,
+                    fontFamily = poppins_semiBold
+                )
+                Text(
+                    text = "See all",
+                    fontSize = 14.sp,
+                    color = shapphire_blue,
+                    fontFamily = poppins_regular,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState()),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                hArts.forEach {
+                    HImageCard(
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp),
+                        image = it.id,
+                        name = it.name,
+                        rating = it.rating
+                    )
+                }
+            }
+        }
+        item {
+            Row(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth(0.95f),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                Text(
+                    text = "Recommended",
+                    fontSize = 20.sp,
+                    color = system_black,
+                    fontFamily = poppins_semiBold
+                )
+            }
+        }
+        items(vArts) {
+            VImageCard(
+                modifier = Modifier
+                    .padding(vertical = 10.dp),
+                image = it.id,
+                name = it.name,
+                rating = it.rating
+            )
+        }
+    }
+}
+
+
+@Composable
+fun HImageCard(
+    modifier: Modifier = Modifier,
+    image: Int,
+    name: String,
+    rating: String
+) {
+    Card(
+        modifier = modifier
+            .width(180.dp)
+            .height(240.dp)
+            .clickable { },
+        shape = RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
+
+    ) {
+        Image(
+            painter = painterResource(id = image),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxSize()
+        )
+    }
+
+
+}
+
+@Composable
+fun VImageCard(
+    modifier: Modifier = Modifier,
+    image: Int,
+    name: String,
+    rating: String
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth(0.95f)
+            .height(120.dp)
+            .clickable { },
+        shape = RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
+
+    ) {
+        Image(
+            painter = painterResource(id = image),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxSize()
+        )
+    }
+
+}
+
 
 @Composable
 fun TopComponent(
     modifier: Modifier = Modifier
 ) {
-    val list = listOf("Portraits","Sci-Fi","Pop Culture","Nature","Fantasy","Historical")
+    val list = listOf("Portraits", "Sci-Fi", "Pop Culture", "Nature", "Fantasy", "Historical")
     Column(
         modifier = modifier
             .fillMaxWidth(0.95f),
@@ -126,7 +272,7 @@ fun TopComponent(
                 .shadow(elevation = 0.dp, shape = RoundedCornerShape(20.dp)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ){
+        ) {
             Icon(
                 painter = painterResource(id = R.drawable.search),
                 modifier = Modifier
@@ -152,10 +298,10 @@ fun TopComponent(
                     orientation = Orientation.Horizontal,
                     state = ScrollableState { it }
                 ),
-            horizontalArrangement = Arrangement.spacedBy(15.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically,
-        ){
-            items(list){
+        ) {
+            items(list) {
                 ActionChips(text = it)
             }
         }
@@ -165,8 +311,8 @@ fun TopComponent(
 
 @Composable
 fun ActionChips(
-    text : String
-){
+    text: String
+) {
     ElevatedFilterChip(
         selected = false,
         onClick = { /*TODO*/ },
