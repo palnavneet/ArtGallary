@@ -186,7 +186,7 @@ fun VImageCard(
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth(0.95f)
+            .fillMaxWidth()
             .height(120.dp)
             .clickable { },
         shape = RoundedCornerShape(20.dp),
