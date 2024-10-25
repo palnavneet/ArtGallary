@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.exibhitease.R
@@ -118,7 +119,9 @@ fun ArDetailScreen(
                         fontFamily = poppins_semiBold,
                         color = system_black,
                         modifier = Modifier
-                            .padding(start = 10.dp)
+                            .padding(start = 10.dp),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     IconButton(
                         onClick = {
