@@ -6,6 +6,7 @@ sealed class Route(
 ){
     object OnBoardingScreen : Route(route = "OnBoardingScreen")
     object HomeScreen : Route(route = "HomeScreen")
+    object ArScreen : Route(route = "ArScreen")
 
 }
 

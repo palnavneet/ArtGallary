@@ -35,7 +35,6 @@ import com.app.exibhitease.ui.theme.color_bottomSheet
 import com.app.exibhitease.ui.theme.poppins_Bold
 import com.app.exibhitease.ui.theme.poppins_medium
 import com.app.exibhitease.ui.theme.poppins_regular
-import dev.romainguy.kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -42,8 +42,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.exibhitease.R
+import com.app.exibhitease.presentation.data.repository.Art
 import com.app.exibhitease.presentation.data.repository.getHArts
 import com.app.exibhitease.presentation.data.repository.getVArts
+import com.app.exibhitease.presentation.viewmodel.SharedViewModel
 import com.app.exibhitease.ui.theme.poppins_light
 import com.app.exibhitease.ui.theme.poppins_medium
 import com.app.exibhitease.ui.theme.poppins_regular
@@ -54,7 +56,9 @@ import com.app.exibhitease.ui.theme.system_white
 
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onclick : (art : Art) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,13 +67,18 @@ fun HomeScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopComponent()
-        BottomComponent()
+        BottomComponent(
+            onClick = {
+                onclick(it)
+            }
+        )
     }
 }
 
 @Composable
 fun BottomComponent(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick : (art : Art) -> Unit
 ) {
     val hArts = getHArts()
     val vArts = getVArts()
@@ -115,7 +124,10 @@ fun BottomComponent(
                             .padding(horizontal = 10.dp),
                         image = it.id,
                         name = it.name,
-                        rating = it.rating
+                        rating = it.rating,
+                        onClick = {
+                            onClick(it)
+                        }
                     )
                 }
             }
@@ -142,7 +154,10 @@ fun BottomComponent(
                     .padding(vertical = 10.dp),
                 image = it.id,
                 name = it.name,
-                rating = it.rating
+                rating = it.rating,
+                onClick = {
+                    onClick(it)
+                }
             )
         }
     }
@@ -154,13 +169,14 @@ fun HImageCard(
     modifier: Modifier = Modifier,
     image: Int,
     name: String,
-    rating: String
+    rating: String,
+    onClick : () -> Unit
 ) {
     Card(
         modifier = modifier
             .width(180.dp)
             .height(240.dp)
-            .clickable { },
+            .clickable{onClick()},
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
 
@@ -182,13 +198,16 @@ fun VImageCard(
     modifier: Modifier = Modifier,
     image: Int,
     name: String,
-    rating: String
+    rating: String,
+    onClick : () -> Unit
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(120.dp)
-            .clickable { },
+            .clickable {
+                onClick()
+            },
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
 
