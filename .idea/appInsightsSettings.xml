@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.app.exibhitease" />
+                  <option name="mobileSdkAppId" value="1:844058575473:android:200f89de0e2b7e838091d0" />
+                  <option name="projectId" value="artgallary-8b399" />
+                  <option name="projectNumber" value="844058575473" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

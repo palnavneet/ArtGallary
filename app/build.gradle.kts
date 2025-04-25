@@ -5,6 +5,8 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     kotlin("plugin.serialization") version "2.0.0"
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    alias(libs.plugins.googleServices)
 }
 
 android {
@@ -86,6 +88,17 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.2.0-alpha01")
     implementation("io.github.sceneview:arsceneview:0.10.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
+    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("com.google.android.gms:play-services-mlkit-document-scanner:16.0.0-beta1")
+    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation(libs.generativeai)
+    implementation(platform(libs.google.firebase.bom))
+    implementation(libs.google.firebase.analytics)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.google.auth)
+    implementation(libs.firebase.database)
+    implementation("nl.dionsegijn:konfetti-compose:2.0.2")
+
 }
 
 private fun strongSkippingConfiguration() = listOf(

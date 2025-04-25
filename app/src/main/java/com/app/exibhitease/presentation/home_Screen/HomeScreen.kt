@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,7 +46,6 @@ import com.app.exibhitease.R
 import com.app.exibhitease.presentation.data.repository.Art
 import com.app.exibhitease.presentation.data.repository.getHArts
 import com.app.exibhitease.presentation.data.repository.getVArts
-import com.app.exibhitease.presentation.viewmodel.SharedViewModel
 import com.app.exibhitease.ui.theme.poppins_light
 import com.app.exibhitease.ui.theme.poppins_medium
 import com.app.exibhitease.ui.theme.poppins_regular
@@ -53,12 +53,23 @@ import com.app.exibhitease.ui.theme.poppins_semiBold
 import com.app.exibhitease.ui.theme.shapphire_blue
 import com.app.exibhitease.ui.theme.system_black
 import com.app.exibhitease.ui.theme.system_white
+import nl.dionsegijn.konfetti.compose.KonfettiView
+import nl.dionsegijn.konfetti.core.Party
+import nl.dionsegijn.konfetti.core.Position
+import nl.dionsegijn.konfetti.core.emitter.Emitter
+import nl.dionsegijn.konfetti.core.models.Size
+import java.util.concurrent.TimeUnit
 
 
 @Composable
 fun HomeScreen(
-    onclick : (art : Art) -> Unit
+    firstLaunch: Boolean,
+    onclick: (art: Art) -> Unit,
+    onGenerateClick: () -> Unit
 ) {
+    if (firstLaunch) {
+        PartyPopperScreen()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,7 +77,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TopComponent()
+        TopComponent(onGenerateClick = onGenerateClick)
         BottomComponent(
             onClick = {
                 onclick(it)
@@ -78,10 +89,11 @@ fun HomeScreen(
 @Composable
 fun BottomComponent(
     modifier: Modifier = Modifier,
-    onClick : (art : Art) -> Unit
+    onClick: (art: Art) -> Unit
 ) {
-    val hArts = getHArts()
-    val vArts = getVArts()
+    val context = LocalContext.current
+    val hArts = getHArts(context)
+    val vArts = getVArts(context)
     LazyColumn(
         modifier = modifier
             .fillMaxWidth(0.95f)
@@ -170,13 +182,13 @@ fun HImageCard(
     image: Int,
     name: String,
     rating: String,
-    onClick : () -> Unit
+    onClick: () -> Unit
 ) {
     Card(
         modifier = modifier
             .width(180.dp)
             .height(240.dp)
-            .clickable{onClick()},
+            .clickable { onClick() },
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
 
@@ -199,8 +211,9 @@ fun VImageCard(
     image: Int,
     name: String,
     rating: String,
-    onClick : () -> Unit
+    onClick: () -> Unit
 ) {
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -226,7 +239,8 @@ fun VImageCard(
 
 @Composable
 fun TopComponent(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onGenerateClick: () -> Unit
 ) {
     val list = listOf("Portraits", "Sci-Fi", "Pop Culture", "Nature", "Fantasy", "Historical")
     Column(
@@ -260,7 +274,7 @@ fun TopComponent(
                     tint = shapphire_blue
                 )
                 Text(
-                    text = "Solara, Nexus",
+                    text = "India, Kanpur",
                     fontSize = 12.sp,
                     fontFamily = poppins_light,
                     color = system_black
@@ -286,6 +300,9 @@ fun TopComponent(
         Row(
             modifier = Modifier
                 .padding(vertical = 12.dp)
+                .clickable {
+                    onGenerateClick()
+                }
                 .fillMaxWidth()
                 .background(color = Color(0xFFD7D9DC), RoundedCornerShape(20.dp))
                 .shadow(elevation = 0.dp, shape = RoundedCornerShape(20.dp)),
@@ -293,7 +310,7 @@ fun TopComponent(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.search),
+                painter = painterResource(id = R.drawable.ai),
                 modifier = Modifier
                     .size(40.dp)
                     .padding(start = 10.dp),
@@ -301,7 +318,7 @@ fun TopComponent(
                 tint = Color(0xFF9CA1A7)
             )
             Text(
-                text = "Search Creations...",
+                text = "Generate Images...",
                 modifier = Modifier
                     .padding(vertical = 18.dp),
                 fontSize = 20.sp,
@@ -360,5 +377,24 @@ fun ActionChips(
             selectedTrailingIconColor = system_white
         ),
         shape = CircleShape
+    )
+}
+
+@Composable
+fun PartyPopperScreen() {
+    KonfettiView(
+        modifier = Modifier.fillMaxSize(),
+        parties = listOf(
+            Party(
+                emitter = Emitter(duration = 1, TimeUnit.SECONDS).perSecond(100),
+                spread = 360,
+                position = Position.Relative(0.5, 0.3),
+                colors = listOf(0xfce18a, 0xff726d, 0xf4306d, 0xb48def),
+                speed = 4f,
+                maxSpeed = 30f,
+                damping = 0.9f,
+                size = listOf(Size.SMALL, Size.LARGE)
+            )
+        )
     )
 }

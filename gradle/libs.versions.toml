@@ -8,6 +8,13 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.2"
 composeBom = "2024.09.03"
+generativeai = "0.9.0"
+googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
+firebaseBom = "32.8.0"
+firebaseGoogleAuth = "21.1.0"
+gms = "4.4.1"
+coil-compose = "2.4.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -24,9 +31,18 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+generativeai = { group = "com.google.ai.client.generativeai", name = "generativeai", version.ref = "generativeai" }
+google-firebase-bom = {module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom"}
+google-firebase-analytics = { module = "com.google.firebase:firebase-analytics", name = "firebase-analystics"}
+firebase-auth = { module = "com.google.firebase:firebase-auth", name = "firebase-auth"}
+firebase-google-auth = {module = "com.google.android.gms:play-services-auth", version.ref = "firebaseGoogleAuth"}
+firebase-database = { module = "com.google.firebase:firebase-database", name = "firebase-database"}
+coil-compose = { module = "io.coil-kt:coil-compose", name = "coil-compose", version.ref = "coil-compose"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+google-android-libraries-mapsplatform-secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleAndroidLibrariesMapsplatformSecretsGradlePlugin" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "gms"}
 

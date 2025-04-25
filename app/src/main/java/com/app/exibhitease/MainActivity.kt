@@ -43,6 +43,7 @@ class MainActivity : ComponentActivity() {
             val settingsState = settingsViewModel.state.collectAsStateWithLifecycle()
             ExibhiteaseTheme {
                 ExibhiteaseApp(
+                    context = this,
                     firstLaunch = firstLaunch,
                     settingsViewModel = settingsViewModel,
                     finishActivity = {

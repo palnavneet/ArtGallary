@@ -7,4 +7,36 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    //System Colors
+    <color name="system_color_white">#FFFFFF</color>
+    <color name="system_color_black">#000000</color>
+    <color name="system_color_blue">#3085fe</color>
+    <color name="system_screens_background">#f6f6f6</color>
+    //Element Colors
+    <color name="element_indicator_color">#e7e7e8</color>
+    <color name="element_onboarding_text_first_color">#101317</color>
+    <color name="element_onboarding_text_second_color">#acafb5</color>
+    <color name="element_onboarding_button">#3085fe</color>
+    <color name="element_add_button">#599dfe</color>
+    <color name="element_navigation_bar">#eaf3ff</color>
+    <color name="element_Icon_arrow_tint">#B0B0B0</color>
+    <color name="element_icon_settings">#5C5C5C</color>
+    <color name="element_switch">#CDCDCD</color>
+    <color name="element_divider">#E9E9E9</color>
+    <color name="element_taskPage">#f2f3f8</color>
+    //HomeScreenTop
+    <color name="element_home_topBar">#d0efef</color>
+    <color name="element_home_topBarIconXText">#050608</color>
+    <color name="element_home_welcomeFontColor">#546464</color>
+
+    //Floating Action Button
+    <color name="element_floatingActionButton">#040808</color>
+    //Calendar
+    <color name="element_unAvailableDaysOfTheMonth">#a2a3a8</color>
+    <color name="element_calendarBlackColor">#333132</color>
+    <color name="element_calendarBottom">#f2e9e2</color>
+    //Bottom Sheet
+    <color name="element_bottomSheet_crossIcon">#d6d6d6</color>
 </resources>
