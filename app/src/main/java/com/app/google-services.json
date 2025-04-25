@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "844058575473",
+    "project_id": "artgallary-8b399",
+    "storage_bucket": "artgallary-8b399.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844058575473:android:200f89de0e2b7e838091d0",
+        "android_client_info": {
+          "package_name": "com.app.exibhitease"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844058575473-adns5sq9buhe6fudaa9rv7aa49btt89f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.exibhitease",
+            "certificate_hash": "afb0d34437c4650be62f5e73b5068e9d3495542e"
+          }
+        },
+        {
+          "client_id": "844058575473-ud654djis8f9u8iu2t5btb5202udgfte.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI8B9__j_ClcjwyU9Fgai2rqior8h8IR8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844058575473-ud654djis8f9u8iu2t5btb5202udgfte.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "844058575473",
+    "project_id": "artgallary-8b399",
+    "storage_bucket": "artgallary-8b399.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844058575473:android:200f89de0e2b7e838091d0",
+        "android_client_info": {
+          "package_name": "com.app.exibhitease"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI8B9__j_ClcjwyU9Fgai2rqior8h8IR8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
