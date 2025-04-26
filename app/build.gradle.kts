@@ -97,7 +97,14 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.google.auth)
     implementation(libs.firebase.database)
+    implementation("com.google.firebase:firebase-vertexai")
     implementation("nl.dionsegijn:konfetti-compose:2.0.2")
+    implementation("com.airbnb.android:lottie-compose:6.3.0")
+    //Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
 
 }
 

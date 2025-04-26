@@ -8,7 +8,8 @@ sealed class Route(
     object HomeScreen : Route(route = "HomeScreen")
     object ArScreen : Route(route = "ArScreen")
     object CustomImage : Route(route = "CustomImage")
-    object GenerateImage : Route(route = "GenerateImage")
+    object Register : Route(route = "Register")
+    object ImageGenerator : Route(route = "ImageGenerator")
 
 }
 

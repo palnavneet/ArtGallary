@@ -9,8 +9,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -25,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -38,6 +43,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.app.exibhitease.R
 import com.app.exibhitease.common.compose.UiButton
 import com.app.exibhitease.utils.AuthManager
@@ -52,9 +63,10 @@ import nl.dionsegijn.konfetti.core.models.Size
 import java.util.concurrent.TimeUnit
 
 @Composable
-fun GenerateImage(
+fun Register(
     auth: AuthManager,
     user: FirebaseUser?,
+    navigation : NavHostController
 ) {
 
 
@@ -88,7 +100,7 @@ fun GenerateImage(
                         style = SpanStyle(
                             color = system_black,
                             fontSize = 28.sp,
-                            fontFamily = poppins_Bold,
+                            fontFamily = poppins_regular,
                         )
                     ) {
                         append("Create an account to")
@@ -105,7 +117,7 @@ fun GenerateImage(
                                 )
                             ),
                             fontSize = 28.sp,
-                            fontFamily = poppins_Bold
+                            fontFamily = poppins_regular
                         )
                     ) {
                         append("Generate")
@@ -115,7 +127,7 @@ fun GenerateImage(
                         style = SpanStyle(
                             color = system_black,
                             fontSize = 28.sp,
-                            fontFamily = poppins_Bold
+                            fontFamily = poppins_regular
                         )
                     ) {
                         append("Images!")
@@ -193,10 +205,11 @@ fun GenerateImage(
                                 password = password,
                                 auth = auth,
                                 context = context,
+                                navigation = navigation
                             )
                         }
                     },
-                    text = "Register"
+                    text = "Register \uD83D\uDC64"
                 )
 
             }
@@ -212,7 +225,40 @@ fun GenerateImage(
                     color = Color(0xFFFFFFFF)
                 )
             )
+            val composition by rememberLottieComposition(
+                LottieCompositionSpec.RawRes(R.raw.onboarding_animation)
+            )
+            val animationState = animateLottieCompositionAsState(
+                composition = composition,
+                iterations = LottieConstants.IterateForever,
+                isPlaying = true,
+            )
 
+            LottieAnimation(
+                modifier = Modifier.size(150.dp),
+                composition = composition,
+                progress = { animationState.progress },
+            )
+
+            Spacer(Modifier.size(10.dp))
+
+            IconButton(
+                modifier = Modifier.size(50.dp),
+                onClick = {
+                    navigation.popBackStack()
+                },
+                colors = IconButtonColors(
+                    contentColor = Color(0xFFFFFFFF),
+                    containerColor = Color(0xFF625b71),
+                    disabledContentColor = Color(0xFFFFFFFF),
+                    disabledContainerColor = Color(0xFFFFFFFF)
+                )
+            ) {
+                Icon(
+                    painterResource(R.drawable.back),
+                    null,
+                )
+            }
         }
     }
 
@@ -225,6 +271,7 @@ private suspend fun signUp(
     password: String,
     auth: AuthManager,
     context: Context,
+    navigation: NavHostController
 ) {
     if (email.isNotEmpty() && password.isNotEmpty()) {
         when (val result = auth.createUserWithEmailAndPassword(email, password)) {
@@ -234,7 +281,9 @@ private suspend fun signUp(
 
             }
 
+
             is AuthRes.Success -> {
+                navigation.popBackStack()
                 Toast.makeText(context, "Registration Successful", Toast.LENGTH_LONG).show()
             }
         }

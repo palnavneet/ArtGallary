@@ -64,7 +64,11 @@ fun ExibhiteaseApp(
 
     val isBottomBarVisible = remember(key1 = backStackState) {
         backStackState?.destination?.route == ExibhiteaseTabs.Home.route ||
-                backStackState?.destination?.route == ExibhiteaseTabs.Favourites.route
+                backStackState?.destination?.route == ExibhiteaseTabs.Favourites.route ||
+                backStackState?.destination?.route == ExibhiteaseTabs.User.route
+    }
+    val isFloatingVisible = remember(key1 = backStackState) {
+        backStackState?.destination?.route == ExibhiteaseTabs.Home.route
     }
 
     val customImageViewModel: CustomImageViewModel = viewModel()
@@ -80,7 +84,7 @@ fun ExibhiteaseApp(
             }
         },
         floatingActionButton = {
-            if (isBottomBarVisible) {
+            if (isBottomBarVisible && isFloatingVisible) {
                 ImagePickerFab(navController, customImageViewModel)
             }
         },

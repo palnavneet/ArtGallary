@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,8 +32,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SelectableChipColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -53,6 +56,7 @@ import com.app.exibhitease.ui.theme.poppins_semiBold
 import com.app.exibhitease.ui.theme.shapphire_blue
 import com.app.exibhitease.ui.theme.system_black
 import com.app.exibhitease.ui.theme.system_white
+import kotlinx.coroutines.delay
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.Position
@@ -65,7 +69,8 @@ import java.util.concurrent.TimeUnit
 fun HomeScreen(
     firstLaunch: Boolean,
     onclick: (art: Art) -> Unit,
-    onGenerateClick: () -> Unit
+    onGenerateClick: () -> Unit,
+    onPromptClick: (String) -> Unit
 ) {
     if (firstLaunch) {
         PartyPopperScreen()
@@ -77,7 +82,9 @@ fun HomeScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TopComponent(onGenerateClick = onGenerateClick)
+        TopComponent(onGenerateClick = onGenerateClick){
+            onPromptClick(it)
+        }
         BottomComponent(
             onClick = {
                 onclick(it)
@@ -240,9 +247,118 @@ fun VImageCard(
 @Composable
 fun TopComponent(
     modifier: Modifier = Modifier,
-    onGenerateClick: () -> Unit
+    onGenerateClick: () -> Unit,
+    onPromptClick : (String) -> Unit
 ) {
-    val list = listOf("Portraits", "Sci-Fi", "Pop Culture", "Nature", "Fantasy", "Historical")
+    val prompts = listOf(
+        "Sunset over a calm lake and mountains",
+        "Flying cars in a neon-lit city",
+        "Snowy cabin with smoke rising",
+        "Dragon soaring above a forest",
+        "Medieval market full of merchants",
+        "Glowing mushrooms in a magical forest",
+        "Ancient books in a grand library",
+        "Coffee steaming on a wooden table",
+        "Colorful coral reefs under water",
+        "Kitten playing with yarn in sunlight",
+        "Castle atop a misty mountain",
+        "Futuristic lab with advanced equipment",
+        "Palm trees on a serene beach",
+        "Exotic animals in a dense jungle",
+        "Robot casting a shadow over a city",
+        "Stars swirling in a deep galaxy",
+        "Superhero soaring with sparks behind",
+        "Autumn leaves drifting in a park",
+        "Unicorn-pegasus hybrid in a meadow",
+        "Golden gears on an old clock",
+        "Waterfall into a crystal-clear lake",
+        "Butterflies fluttering around flowers",
+        "Fog in an eerie forest",
+        "Spaceship passing through asteroids",
+        "Floating rocks in a desert",
+        "Astronaut cat floating in space",
+        "Cherry blossoms at a Japanese temple",
+        "Steampunk airship over Victorian streets",
+        "Sports car speeding down a highway",
+        "Mountain landscape with a river",
+        "Wizard casting a spell in darkness",
+        "Carnival with bright lights and costumes",
+        "Owl perched under the stars in snow",
+        "Cactus in a vast desert",
+        "Cave entrance behind a waterfall",
+        "Quiet park with families and children",
+        "Flower petals glistening with dew",
+        "Moon glowing over a sleepy town",
+        "Pirate ships battling a stormy sea",
+        "Zen garden with stones and sand",
+        "Hot air balloons over a valley",
+        "Majestic castle with shimmering spires",
+        "Northern lights over a snowy forest",
+        "Potion lab with bubbling cauldrons",
+        "Treasure chest overflowing with gold",
+        "Stone cottages in a countryside village",
+        "Robot walking through a cyberpunk alley",
+        "Knight standing guard at a fortress",
+        "Dragon curled around a treasure hoard",
+        "Magical portal opening in a forest",
+        "Haunted mansion with cracked windows",
+        "Peacock displaying its vibrant feathers",
+        "Octopus rising from the ocean",
+        "Space station orbiting a distant planet",
+        "Families strolling through a park",
+        "Mermaid resting on a sea rock",
+        "Storm clouds over a golden field",
+        "Tiger lurking in tall jungle grass",
+        "Lanterns floating on a river at night",
+        "Train passing through snowy mountains",
+        "Alien forest with glowing trees",
+        "Children chasing fireflies at dusk",
+        "Wolves howling under a full moon",
+        "Ancient ruins covered in vines",
+        "Swan gliding on a tranquil lake",
+        "Fireworks over a bustling city",
+        "Tiny fairy sleeping on a leaf",
+        "Penguins sliding on icy slopes",
+        "Crystal cave illuminated with light",
+        "Cybernetic hawk flying above skyscrapers",
+        "Street musician playing under moonlight",
+        "Lighthouse standing tall in a storm",
+        "Tornado spinning over flatlands",
+        "Balloons tied to a cozy house",
+        "Samurai walking through cherry blossoms",
+        "Fox watching snowfall from a hill",
+        "Floating lantern festival in a village",
+        "Knight riding a horse through fog",
+        "Space whale drifting in cosmic ocean",
+        "Windmill turning in a breezy field",
+        "Skiers on a snow-covered slope",
+        "Robot hand planting a tree",
+        "Butterfly wings made of stained glass",
+        "Market square lit by lanterns",
+        "Dinosaur walking through a futuristic city",
+        "Girl reading under a tree of light",
+        "Ghost ship glowing in the dark sea",
+        "Astronaut dancing on the moon",
+        "Deer drinking from a glowing pond",
+        "Crystals growing out of a canyon",
+        "Bridge connecting two floating islands",
+        "Warrior meditating under a waterfall",
+        "City skyline during golden hour",
+        "Vintage airplane flying over farmland",
+        "Old library with candles and scrolls",
+        "Robot painting a landscape",
+        "Squirrel with armor on a battlefield",
+        "Sailing ship caught in a whirlpool",
+        "Boy and robot under a starry sky",
+        "Sunflowers swaying in a summer breeze",
+        "Fire dragon wrapped around a tower",
+        "Bamboo forest with beams of sunlight",
+        "Wolf pup in a flower meadow",
+        "Floating temple in the sky"
+    ).shuffled()
+
+
+
     Column(
         modifier = modifier
             .fillMaxWidth(0.95f),
@@ -300,7 +416,8 @@ fun TopComponent(
         Row(
             modifier = Modifier
                 .padding(vertical = 12.dp)
-                .clickable {
+                .clip(RoundedCornerShape(20.dp))
+                .clickable{
                     onGenerateClick()
                 }
                 .fillMaxWidth()
@@ -327,31 +444,67 @@ fun TopComponent(
                 maxLines = 1
             )
         }
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .scrollable(
-                    orientation = Orientation.Horizontal,
-                    state = ScrollableState { it }
-                ),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            items(list) {
-                ActionChips(text = it)
-            }
+        LoopingLazyRow(prompts){
+            onPromptClick(it)
         }
     }
 
 }
+@Composable
+fun LoopingLazyRow(
+    list: List<String>,
+    onPromptClick: (String) -> Unit
+) {
+    val listState = rememberLazyListState()
+
+    // Start the LaunchedEffect to handle looping scroll
+    LaunchedEffect(Unit) {
+        while (true) {
+            // Scroll to the next item every 2 seconds
+            delay(2000) // Delay between each scroll
+
+            // Get the current index of the first visible item
+            val currentIndex = listState.firstVisibleItemIndex
+
+            // Calculate the next index to scroll to (wrap around when reaching the end)
+            val nextIndex = if (currentIndex < list.size - 1) currentIndex + 1 else 0
+
+            // Smoothly scroll to the next item
+            listState.animateScrollToItem(nextIndex)
+        }
+    }
+
+    // LazyRow setup
+    LazyRow(
+        state = listState,
+        modifier = Modifier
+            .fillMaxWidth()
+            .scrollable(
+                orientation = Orientation.Horizontal,
+                state = ScrollableState { it }
+            ),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        items(list) {
+            ActionChips(text = it){
+                onPromptClick(it)
+            }
+        }
+    }
+}
+
 
 @Composable
 fun ActionChips(
-    text: String
+    text: String,
+    onClick: (String) -> Unit
 ) {
     ElevatedFilterChip(
         selected = false,
-        onClick = { /*TODO*/ },
+        onClick = {
+            onClick(text)
+        },
         label = {
             Text(
                 text = text,

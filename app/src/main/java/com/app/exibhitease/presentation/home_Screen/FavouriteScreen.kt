@@ -1,6 +1,8 @@
 package com.app.exibhitease.presentation.home_Screen
 
+import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -44,7 +47,9 @@ import com.app.exibhitease.ui.theme.system_black
 import kotlin.math.absoluteValue
 
 @Composable
-fun FavouriteScreen(){
+fun FavouriteScreen(
+    onClick : (Uri) -> Unit
+){
 
     val lts = listOf(
         R.drawable.image1,
@@ -88,18 +93,26 @@ fun FavouriteScreen(){
         }
 
         HorizontalPager(state = pagerState, contentPadding = PaddingValues(50.dp)) { index : Int ->
-            ImageContent(lts,index,pagerState)
+            ImageContent(lts,index,pagerState){
+                onClick(it)
+            }
         }
 
     }
 }
 
 @Composable
-fun ImageContent(lts : List<Int>, index: Int, pagerState: PagerState) {
+fun ImageContent(lts : List<Int>, index: Int, pagerState: PagerState,onClick : (Uri) -> Unit,) {
+    val context = LocalContext.current
+    val uri = Uri.parse("android.resource://${context.packageName}/${lts[index]}")
+
     val pagerOffset = (pagerState.currentPage - index) + pagerState.currentPageOffsetFraction
     Card(
         shape = RoundedCornerShape(15.dp),
         modifier = Modifier
+            .clickable{
+                onClick(uri)
+            }
             .padding(2.dp)
             .graphicsLayer {
                 lerp(
